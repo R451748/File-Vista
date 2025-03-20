@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class FileService {
 
         // Define file path
         String directory = "C:/uploaded_files/";
-        File saveFile = new File(directory + file.getOriginalFilename());
+        File saveFile = new File(directory, file.getOriginalFilename());
 
         // Ensure directory exists
         File dir = new File(directory);
@@ -43,19 +44,22 @@ public class FileService {
             throw new IOException("Failed to create upload directory");
         }
 
-        // Save file to disk
-        file.transferTo(saveFile);
+        // ✅ Save file properly
+        try (var inputStream = file.getInputStream()) {
+            Files.copy(inputStream, saveFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
 
-        // Save to database
+        // ✅ Save to database
         FileEntity fileEntity = new FileEntity();
         fileEntity.setFileName(file.getOriginalFilename());
         fileEntity.setFileType(file.getContentType());
-        fileEntity.setData(file.getBytes());
+        fileEntity.setData(file.getBytes());  // Store file content
         fileEntity.setDirectory(false);
         fileRepository.save(fileEntity);
 
-        return saveFile.getAbsolutePath(); // Return the file location
+        return saveFile.getAbsolutePath(); // Return saved file path
     }
+
 
 
     // ✅ Retrieve all files

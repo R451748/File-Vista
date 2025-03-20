@@ -84,9 +84,12 @@ public class FileController {
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         try {
+            System.out.println("📂 Uploading: " + file.getOriginalFilename());
             fileService.uploadFile(file);
             redirectAttributes.addFlashAttribute("successMessage", "File uploaded successfully!");
         } catch (Exception e) {
+            System.out.println("❌ Upload error: " + e.getMessage());
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("errorMessage", "Error uploading file: " + e.getMessage());
         }
         return "redirect:/files";
@@ -116,16 +119,16 @@ public class FileController {
         return "redirect:/files"; // Redirect to the files page
     }
     @PostMapping("/create-file")
-    public String createFile(@RequestParam("fileName") String fileName, Model model) {
+    public String createFile(@RequestParam("fileName") String fileName, RedirectAttributes redirectAttributes) {
         try {
-            // Create a new file (or handle the file creation logic)
             fileService.createFile(fileName);
-            model.addAttribute("successMessage", "File created successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "✅ File '" + fileName + "' created successfully!");
         } catch (IOException e) {
-            model.addAttribute("errorMessage", "Error creating file: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "❌ Error creating file: " + e.getMessage());
         }
-        return "file-manager";  // Return the name of the view to render
+        return "redirect:/files";  // ✅ Redirect to home page (index.html)
     }
+
     @GetMapping("/download/{id}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Long id) {
         Optional<FileEntity> fileEntityOptional = fileService.getFile(id);

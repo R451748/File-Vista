@@ -33,7 +33,7 @@
     </form>
 
     <!-- 📂 File & Directory Table -->
-    <table class="table table-bordered">
+    <table class="table table-bordered text-center">
         <thead>
             <tr>
                 <th>ID</th>
@@ -46,18 +46,17 @@
             <tr th:each="file : ${files}">
                 <td th:text="${file.id}"></td>
                 <td>
-                    <span th:if="${file.isDirectory}" class="material-icons folder-icon">folder</span>
-                    <span th:unless="${file.isDirectory}" class="material-icons file-icon">insert_drive_file</span>
+                    <span th:if="${file.isDirectory}" class="material-icons text-warning">folder</span>
+                    <span th:unless="${file.isDirectory}" class="material-icons text-primary">insert_drive_file</span>
                     <span th:text="${file.fileName}"></span>
                 </td>
                 <td th:text="${file.isDirectory} ? '📁 Directory' : '📄 File'"></td>
                 <td>
-                    <td>
-    <a th:if="!${file.isDirectory}" th:href="@{/files/download/{id}(id=${file.id})}" class="btn btn-success">Download</a>
-    <a th:href="@{/files/delete/{id}(id=${file.id})}" class="btn btn-danger">Delete</a>
-    <a th:if="!${file.isDirectory}" th:href="@{/files/edit/{id}(id=${file.id})}" class="btn btn-info">Edit</a> <!-- Edit Button Only for Files -->
-</td>
-
+                    <div class="d-flex justify-content-center gap-2">
+                        <a th:if="!${file.isDirectory}" th:href="@{/files/download/{id}(id=${file.id})}" class="btn btn-success">Download</a>
+                        <a th:href="@{/files/delete/{id}(id=${file.id})}" class="btn btn-danger">Delete</a>
+                        <a th:if="!${file.isDirectory}" th:href="@{/files/edit/{id}(id=${file.id})}" class="btn btn-info">Edit</a>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -74,7 +73,6 @@
         <input type="text" name="fileName" class="form-control" placeholder="Enter file name (e.g., newfile.txt)" required>
         <button type="submit" class="btn btn-warning mt-2">Create File</button>
     </form>
-    
 </div>
 
 </body>
