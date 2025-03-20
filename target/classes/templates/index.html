@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Google Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">📂 File Manager</h2>
+
+    <!-- ✅ Display Success Message -->
+    <div th:if="${successMessage}" class="alert alert-success">
+        <strong th:text="${successMessage}"></strong>
+    </div>
+
+    <!-- ❌ Display Error Message -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <strong th:text="${errorMessage}"></strong>
+    </div>
+
+    <!-- 📁 Directory Creation Form -->
+    <form action="/files/create-directory" method="post" class="mb-3">
+        <input type="text" name="directoryName" class="form-control" placeholder="Enter directory name" required>
+        <button type="submit" class="btn btn-secondary mt-2">Create Directory</button>
+    </form>
+
+    <!-- 📂 File & Directory Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Filename</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="file : ${files}">
+                <td th:text="${file.id}"></td>
+                <td>
+                    <span th:if="${file.isDirectory}" class="material-icons folder-icon">folder</span>
+                    <span th:unless="${file.isDirectory}" class="material-icons file-icon">insert_drive_file</span>
+                    <span th:text="${file.fileName}"></span>
+                </td>
+                <td th:text="${file.isDirectory} ? '📁 Directory' : '📄 File'"></td>
+                <td>
+                    <td>
+    <a th:if="!${file.isDirectory}" th:href="@{/files/download/{id}(id=${file.id})}" class="btn btn-success">Download</a>
+    <a th:href="@{/files/delete/{id}(id=${file.id})}" class="btn btn-danger">Delete</a>
+    <a th:if="!${file.isDirectory}" th:href="@{/files/edit/{id}(id=${file.id})}" class="btn btn-info">Edit</a> <!-- Edit Button Only for Files -->
+</td>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 🔼 File Upload Form -->
+    <form action="/files/upload" method="post" enctype="multipart/form-data" class="mb-3">
+        <input type="file" name="file" required>
+        <button type="submit" class="btn btn-primary">Upload File</button>
+    </form>
+
+    <!-- 📄 Create New File Form -->
+    <form action="/files/create-file" method="post" class="mb-3">
+        <input type="text" name="fileName" class="form-control" placeholder="Enter file name (e.g., newfile.txt)" required>
+        <button type="submit" class="btn btn-warning mt-2">Create File</button>
+    </form>
+    
+</div>
+
+</body>
+</html>

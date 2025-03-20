@@ -1,0 +1,69 @@
+      /* Background with Gradient */
+        body {
+            background: linear-gradient(135deg, #2b5876, #4e4376);
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Centered Container with Glass Effect */
+        .container {
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Input Fields */
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Buttons with Hover Effects */
+        .btn {
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #1e90ff;
+            transform: scale(1.05);
+        }
+        .btn-secondary:hover {
+            background-color: #32cd32;
+            transform: scale(1.05);
+        }
+        .btn-danger:hover {
+            background-color: #ff4500;
+            transform: scale(1.05);
+        }
+
+        /* File Table */
+        .table {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        .table th {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Icons for File & Folder */
+        .file-icon {
+            color: #ffcc00;
+        }
+        .folder-icon {
+            color: #00ffcc;
+        }
+
+        /* Success & Error Messages */
+        .alert {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
